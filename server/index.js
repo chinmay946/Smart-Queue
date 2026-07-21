@@ -1,0 +1,76 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import { createServer } from 'http';
+import bcrypt from 'bcryptjs';
+import connectDB from './config/db.js';
+import User from './models/User.js';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import tokenRoutes from './routes/tokenRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import { initSocket } from './utils/socket.js';
+
+dotenv.config();
+
+const app = express();
+const httpServer = createServer(app);
+initSocket(httpServer);
+
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', message: 'Smart Queue API is running' });
+});
+
+// Friendly root route to help browsers visiting the server root
+app.get('/', (_req, res) => {
+  res.json({ status: 'ok', message: 'Smart Queue API root. Use /api/health for health checks or /api routes for the API.' });
+});
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/token', tokenRoutes);
+app.use('/api/admin', adminRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+const PORT = process.env.PORT || 5000;
+
+const ensureAdminUser = async () => {
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@smartqueue.local';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
+  const adminName = process.env.ADMIN_NAME || 'SmartQueue Admin';
+
+  const existingAdmin = await User.findOne({ role: 'admin' });
+  if (existingAdmin) {
+    console.log('Admin user already exists:', existingAdmin.email);
+    return;
+  }
+
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
+  await User.create({
+    name: adminName,
+    email: adminEmail,
+    password: hashedPassword,
+    role: 'admin'
+  });
+
+  console.log(`Default admin created: ${adminEmail}`);
+};
+
+connectDB()
+  .then(async () => {
+    await ensureAdminUser();
+    httpServer.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  });
