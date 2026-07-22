@@ -1,0 +1,9 @@
+{
+  "name": "smart-queue-root",
+  "private": true,
+  "scripts": {
+    "build": "cd client && npm ci && npm run build",
+    "vercel-build": "npm run build",
+    "start": "node server/index.js"
+  }
+}
