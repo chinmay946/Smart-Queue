@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
+import path from 'path';
 import bcrypt from 'bcryptjs';
 import connectDB from './config/db.js';
 import User from './models/User.js';
@@ -21,6 +22,16 @@ initSocket(httpServer);
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+// Serve a favicon when the server receives a request for /favicon.ico
+app.get('/favicon.ico', (_req, res) => {
+  const faviconPath = path.resolve('client', 'public', 'favicon.svg');
+  res.sendFile(faviconPath, (err) => {
+    if (err) {
+      res.status(404).end();
+    }
+  });
+});
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', message: 'Smart Queue API is running' });
