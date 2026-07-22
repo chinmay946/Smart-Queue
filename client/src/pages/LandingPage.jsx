@@ -46,8 +46,8 @@ export default function LandingPage() {
                 <TimerReset className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="text-sm text-slate-400">Live queue health</p>
-                <p className="text-xl font-semibold">12 waiting • 3 called</p>
+                <p className="text-sm text-slate-400">Smart queue updates</p>
+                <p className="text-xl font-semibold">Book, track, and manage tokens instantly.</p>
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">

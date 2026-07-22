@@ -1,12 +1,11 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Home, ListChecks, Clock3, History, UserCircle, ShieldCheck, Moon, Sun, LogOut, Ticket } from 'lucide-react';
+import { Home, Clock3, History, UserCircle, ShieldCheck, Moon, Sun, LogOut, Ticket } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 
 const userLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: Home },
   { to: '/book-token', label: 'Book Token', icon: Ticket },
-  { to: '/queue-status', label: 'Queue Status', icon: ListChecks },
   { to: '/history', label: 'History', icon: History },
   { to: '/profile', label: 'Profile', icon: UserCircle }
 ];

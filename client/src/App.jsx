@@ -8,7 +8,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import BookTokenPage from './pages/BookTokenPage';
-import QueueStatusPage from './pages/QueueStatusPage';
 import HistoryPage from './pages/HistoryPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminLoginPage from './pages/AdminLoginPage';
@@ -41,7 +40,6 @@ function AppRoutes() {
             <Routes>
               <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
               <Route path="/book-token" element={<ProtectedRoute><BookTokenPage /></ProtectedRoute>} />
-              <Route path="/queue-status" element={<ProtectedRoute><QueueStatusPage /></ProtectedRoute>} />
               <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
