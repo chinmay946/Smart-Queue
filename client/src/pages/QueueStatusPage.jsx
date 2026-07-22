@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import api from '../services/api';
 import Spinner from '../components/Spinner';
 
