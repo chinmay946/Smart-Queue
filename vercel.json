@@ -1,5 +1,14 @@
 {
-  "rewrites": [
-    { "source": "/favicon.ico", "destination": "/favicon.svg" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "src": "/favicon.ico", "dest": "/favicon.svg" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
