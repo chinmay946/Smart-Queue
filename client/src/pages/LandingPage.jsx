@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Sparkles, TimerReset } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 
 const features = [
   { title: 'Fast booking', description: 'Book a token in seconds and track your place live.' },
@@ -40,25 +40,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-2xl shadow-sky-950/30">
-            <div className="mb-4 flex items-center gap-3 rounded-2xl bg-slate-800/80 p-4">
-              <div className="rounded-full bg-sky-600 p-3">
-                <TimerReset className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">Smart queue updates</p>
-                <p className="text-xl font-semibold">Book, track, and manage tokens instantly.</p>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {features.map((feature) => (
-                <div key={feature.title} className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
-                  <h3 className="mb-2 font-semibold text-slate-100">{feature.title}</h3>
-                  <p className="text-sm text-slate-400">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
