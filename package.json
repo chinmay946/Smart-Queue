@@ -4,7 +4,8 @@
   "scripts": {
     "build": "cd client && npm ci && npm run build",
     "vercel-build": "npm run build",
-    "start": "cd server && node index.js"
+    "start": "cd server && node index.js",
+    "postinstall": "cd server && npm install"
   },
   "dependencies": {
     "serverless-http": "^3.0.0"
