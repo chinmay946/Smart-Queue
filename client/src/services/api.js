@@ -1,9 +1,13 @@
 import axios from 'axios';
 
+const fallbackBaseURL = import.meta.env.DEV
+  ? 'http://localhost:5000/api'
+  : window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api'
+    : '/api';
+
 const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    (import.meta.env.DEV ? 'http://localhost:5000/api' : '/api'),
+  baseURL: import.meta.env.VITE_API_URL || fallbackBaseURL,
   headers: {
     'Content-Type': 'application/json'
   }

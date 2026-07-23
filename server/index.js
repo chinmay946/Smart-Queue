@@ -17,15 +17,20 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
-initSocket(httpServer);
 
-const allowedOrigins = [process.env.CLIENT_URL].filter(Boolean);
+if (!process.env.VERCEL) {
+  initSocket(httpServer);
+}
+
+const configuredOrigins = [process.env.CLIENT_URL, process.env.CLIENT_URLS]
+  .filter(Boolean)
+  .flatMap((value) => value.split(',').map((entry) => entry.trim()).filter(Boolean));
+const allowedOrigins = [...new Set(configuredOrigins)];
+const allowAllOrigins = process.env.ALLOW_ALL_ORIGINS === 'true' || process.env.NODE_ENV === 'production';
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.length === 0) {
-      return callback(null, true);
-    }
-    if (allowedOrigins.includes(origin)) {
+    if (!origin || allowAllOrigins || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     callback(new Error('CORS policy: origin not allowed'));
@@ -97,14 +102,28 @@ const ensureAdminUser = async () => {
   console.log(`Default admin created: ${adminEmail}`);
 };
 
-connectDB()
-  .then(async () => {
+const startServer = async () => {
+  try {
+    await connectDB();
     await ensureAdminUser();
+
+    if (process.env.VERCEL) {
+      console.log('Server ready for Vercel serverless runtime');
+      return;
+    }
+
     httpServer.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error('Failed to start server:', error);
-    process.exit(1);
-  });
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
+  }
+};
+
+startServer();
+
+export { app, httpServer };
+export default app;

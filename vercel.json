@@ -5,9 +5,14 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "client/dist" }
+    },
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
     { "handle": "filesystem" },
     { "src": "/favicon.ico", "dest": "/favicon.svg" },
     { "src": "/(.*)", "dest": "/index.html" }
