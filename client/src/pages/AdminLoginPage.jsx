@@ -48,8 +48,8 @@ export default function AdminLoginPage() {
         {showDefaultAdminHint && (
           <div className="mt-4 rounded-2xl border border-slate-700 bg-slate-950/80 p-4 text-sm text-slate-300">
             <p className="font-semibold text-slate-100">Default admin credentials</p>
-            <p>Email: <span className="text-sky-400">admin@smartqueue.local</span></p>
-            <p>Password: <span className="text-sky-400">Admin123!</span></p>
+            <p>Email: <span className="text-sky-400">admin@gmail.com</span></p>
+            <p>Password: <span className="text-sky-400">admin123</span></p>
           </div>
         )}
         <p className="mt-4 text-sm text-slate-400">

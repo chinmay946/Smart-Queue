@@ -65,13 +65,24 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 
 const ensureAdminUser = async () => {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@smartqueue.local';
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@gmail.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
   const adminName = process.env.ADMIN_NAME || 'SmartQueue Admin';
 
   const existingAdmin = await User.findOne({ role: 'admin' });
   if (existingAdmin) {
-    console.log('Admin user already exists:', existingAdmin.email);
+    const wantsUpdate = existingAdmin.email !== adminEmail || existingAdmin.name !== adminName;
+
+    if (wantsUpdate) {
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+      existingAdmin.name = adminName;
+      existingAdmin.email = adminEmail;
+      existingAdmin.password = hashedPassword;
+      await existingAdmin.save();
+      console.log(`Admin account updated: ${adminEmail}`);
+    } else {
+      console.log('Admin user already exists:', existingAdmin.email);
+    }
     return;
   }
 
