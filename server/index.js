@@ -26,13 +26,25 @@ const configuredOrigins = [process.env.CLIENT_URL, process.env.CLIENT_URLS]
   .filter(Boolean)
   .flatMap((value) => value.split(',').map((entry) => entry.trim()).filter(Boolean));
 const allowedOrigins = [...new Set(configuredOrigins)];
-const allowAllOrigins = process.env.ALLOW_ALL_ORIGINS === 'true' || process.env.NODE_ENV === 'production';
+const allowAllOrigins = process.env.ALLOW_ALL_ORIGINS === 'true' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production';
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowAllOrigins || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
       return callback(null, true);
     }
+    
+    // Allow all origins in development or if explicitly enabled
+    if (allowAllOrigins || process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    
+    // In production, check against the configured origins
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
     callback(new Error('CORS policy: origin not allowed'));
   },
   credentials: true
