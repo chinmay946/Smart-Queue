@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: smart-queue-api
+    env: node
+    plan: free
+    buildCommand: npm install && cd server && npm install
+    startCommand: node server/index.js
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: CLIENT_URLS
+        sync: false
+      - key: ADMIN_EMAIL
+        value: admin@gmail.com
+      - key: ADMIN_PASSWORD
+        value: admin123
+      - key: ADMIN_NAME
+        value: SmartQueue Admin
+      - key: ALLOW_ALL_ORIGINS
+        value: false
+      - key: NODE_ENV
+        value: production
